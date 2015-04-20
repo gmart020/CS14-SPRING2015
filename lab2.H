@@ -1,10 +1,23 @@
+//  =============== BEGIN ASSESSMENT HEADER ================
+/// Name: Gerardo Martinez
+/// SID: 861169126
+/// Date: April 20, 2015
+///
+/// This header file contains the code for a class List 
+/// which uses a struct Node. Templates are used so the 
+/// functions can be utilized for lists of any types. The
+/// elementSwap function swaps the position of two Nodes
+/// by adjusting pointers only.
+//  ================== END ASSESSMENT HEADER ===============
+
 #include <iostream>
-#include <cassert>
 #include <forward_list>
 #include <cstdlib>
+
 using namespace std;
 
 template <typename Type>
+
 struct Node
 {
     Type data;
@@ -29,18 +42,40 @@ class List
     List<Type> elementSwap(int pos)
     {
         int sz = size();
-        assert(pos >= 0 && pos < sz - 1);
+        if (pos < 0 || pos >= sz)
+        {
+            cout << "Out of bounds." << endl;
+            return *this;
+        }
+        if (sz < 2)
+        {
+            return *this;
+        }
         Node<Type> *cur = head;
-        int loc = 0;
+        Node<Type> *temp = cur->next;
+        if (pos == 0)
+        {
+            Node<Type> *temp2 = temp->next;
+            head = temp;
+            head->next = cur;
+            cur->next = temp2;
+            return *this;
+        }
+        if (pos == sz - 1)
+        {
+            return *this;
+        }
+        int loc = 1;
         while (loc != pos)
         {
             cur = cur->next;
+            temp = temp->next;
             ++loc;
         }
-        Node<Type> *temp = cur->next;
         Node<Type> *temp2 = temp->next;
-        temp->next = cur;
-        cur->next = temp2;
+        cur->next = temp->next;
+        temp->next = temp2->next;
+        temp2->next = temp;
         return *this;
     }
     
